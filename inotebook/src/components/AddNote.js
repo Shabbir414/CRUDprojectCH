@@ -72,7 +72,7 @@ const AddNote = () => {
           className="btn btn-primary"
           onClick={handleClick}
         >
-          Submit
+          Add Note
         </button>
       </form>
     </div>
