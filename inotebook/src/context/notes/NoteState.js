@@ -27,15 +27,15 @@ const NoteState = (props) => {
   const addNote = async (title, description, tag) => {
     //api call
     const response = await fetch(`${host}/api/notes/addnote`, {
-      method: "post",
+      method: "POST",
       headers: {
         "content-Type": "application/json",
         "auth-token":
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI4M2Y4MzI0MGQ2YjdiYWJhMmM1OGY0In0sImlhdCI6MTY1MjgxNTk1Mn0.m1Tz7QS-wCjj81KhaBIor1MDLBGc8fbYIq8av3iBJbg",
       },
-      body: JSON.stringify(title, description, tag),
+      body: JSON.stringify({ title, description, tag }),
     });
-    // const json = response.json();
+    //const json = response.json();
 
     console.log("adding a new note");
     //Todo Api Call
@@ -52,24 +52,31 @@ const NoteState = (props) => {
   };
 
   //Delete a Note
-  const deleteNote = (id) => {
-    console.log("deleting the note" + id);
-    const newNotes = notes.filter((note) => {
-      return note._id !== id;
-    });
-    setNotes(newNotes);
-  };
-  //Edit a Note
-  const editNote = async (id, title, description, tag) => {
+  const deleteNote = async (id) => {
     //api call
-    const response = await fetch(`${host}/api/notes/update/${id}`, {
-      method: "put",
+    const response = await fetch(`${host}/api/notes/delete/${id}`, {
+      method: "DELETE",
       headers: {
         "content-Type": "application/json",
         "auth-token":
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI4M2Y4MzI0MGQ2YjdiYWJhMmM1OGY0In0sImlhdCI6MTY1MjgxNTk1Mn0.m1Tz7QS-wCjj81KhaBIor1MDLBGc8fbYIq8av3iBJbg",
       },
-      body: JSON.stringify(title, description, tag),
+    });
+    const json = response.json();
+    console.log(json);
+  };
+
+  //Edit a Note
+  const editNote = async (id, title, description, tag) => {
+    //api call
+    const response = await fetch(`${host}/api/notes/update/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI4M2Y4MzI0MGQ2YjdiYWJhMmM1OGY0In0sImlhdCI6MTY1MjgxNTk1Mn0.m1Tz7QS-wCjj81KhaBIor1MDLBGc8fbYIq8av3iBJbg",
+      },
+      body: JSON.stringify({ title, description, tag }),
     });
     const json = response.json();
 
