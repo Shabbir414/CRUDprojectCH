@@ -19,7 +19,6 @@ const NoteState = (props) => {
       },
     });
     const json = await response.json();
-    console.log(json);
     setNotes(json);
   };
 
@@ -35,19 +34,7 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tag }),
     });
-    //const json = response.json();
-
-    console.log("adding a new note");
-    //Todo Api Call
-    const note = {
-      _id: "62892bae407c756187b2295d",
-      user: "6283f83240d6b7baba2c58f4",
-      title: title,
-      description: description,
-      tag: tag,
-      date: "2022-05-21T18:13:02.822Z",
-      __v: 0,
-    };
+    const note = await response.json();
     setNotes(notes.concat(note));
   };
 
@@ -63,7 +50,6 @@ const NoteState = (props) => {
       },
     });
     const json = response.json();
-    console.log(json);
   };
 
   //Edit a Note
@@ -80,15 +66,18 @@ const NoteState = (props) => {
     });
     const json = response.json();
 
+    let newNotes = JSON.parse(JSON.stringify(notes));
     //logic to edit in client
-    for (let index = 0; index < notes.length; index++) {
-      const element = notes[index];
+    for (let index = 0; index < newNotes.length; index++) {
+      const element = newNotes[index];
       if (element._id === id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+        newNotes[index].title = title;
+        newNotes[index].description = description;
+        newNotes[index].tag = tag;
+        break;
       }
     }
+    setNotes(newNotes);
   };
   return (
     <NoteContext.Provider
