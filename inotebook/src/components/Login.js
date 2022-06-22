@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  let history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,6 +19,13 @@ const Login = () => {
     });
     const json = await response.json();
     console.log(json);
+    if (json.success) {
+      // Save the auth token and redirect
+      localStorage.setItem("token", json.authtoken);
+      history.push("/");
+    } else {
+      alert("Invalid credentials");
+    }
   };
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -51,8 +60,8 @@ const Login = () => {
             className="form-control"
             value={credentials.password}
             onChange={onChange}
-            id="password"
             name="password"
+            id="password"
           ></input>
         </div>
         <button type="submit" className="btn btn-primary">
