@@ -23,18 +23,20 @@ router.post(
     }),
   ],
   async (req, res) => {
+    let success = false;
     //if there are errors bad request and the errers
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ success, errors: errors.array() });
     }
     //Check whether the user with this email exists already
     try {
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-        return res
-          .status(400)
-          .json({ error: "sorry a user with this email alerdy exists" });
+        return res.status(400).json({
+          success,
+          error: "sorry a user with this email alerdy exists",
+        });
       }
       const salt = await bcrypt.genSalt(10);
       const secPassword = await bcrypt.hash(req.body.password, salt);
@@ -51,8 +53,8 @@ router.post(
       };
       const jwtData = jwt.sign(data, JWT_SECRET);
       console.log(jwtData);
-
-      res.json({ jwtData });
+      success = true;
+      res.json({ success, jwtData });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Some Error Occured");
