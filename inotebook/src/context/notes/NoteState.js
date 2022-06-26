@@ -47,6 +47,7 @@ const NoteState = (props) => {
       },
     });
     const json = response.json();
+    console.log(json);
   };
 
   //Edit a Note
@@ -61,6 +62,7 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
     const json = response.json();
+    console.log(json);
 
     let newNotes = JSON.parse(JSON.stringify(notes));
     //logic to edit in client
